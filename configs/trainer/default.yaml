@@ -1,0 +1,20 @@
+_target_: pytorch_lightning.Trainer
+
+# set `1` to train on GPU, `0` to train on CPU only
+gpus: 1
+
+#min_epochs: 1
+#max_epochs: 10
+max_steps: 200000
+val_check_interval: 80000 # 10000 * accumulate_grad_batch
+
+weights_summary: null
+progress_bar_refresh_rate: 5
+resume_from_checkpoint: null
+
+gradient_clip_val: 0.1
+gradient_clip_algorithm: "norm"
+
+accumulate_grad_batches: 1
+# batch_size is 4
+# 8 * 4 * 2 ^ 10e5 = 6.6 ^ 10e6 data points will be seen in training

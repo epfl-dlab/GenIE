@@ -1,0 +1,8 @@
+defaults:
+  - default.yaml
+
+_target_: genie.datamodule.datasets_pl.DataModule
+
+dataset_name: "rebel"
+relations_not_to_ignore: ${data_dir}world_definitions/relation_count_experiment/most_frequent/top_100.jsonl
+data_dir: ${data_dir}${datamodule.dataset_name}

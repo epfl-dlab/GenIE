@@ -1,0 +1,3 @@
+_target_: genie.models.genie_base_pl.GeniePL.load_from_checkpoint
+checkpoint_path: ???
+tokenizer_path: null # The tokenizer is normally saved in the checkpoint

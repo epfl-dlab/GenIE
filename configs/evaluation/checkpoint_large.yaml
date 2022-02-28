@@ -1,0 +1,28 @@
+# @package _global_
+
+defaults:
+  - override /logger: #null
+      - csv
+      - wandb
+  - override /trainer: default
+  - override /model: ckpt_default
+  - override /datamodule: null
+  - override /callbacks: null
+  - override /experiment: null
+  - override /hparams_search: null
+  - _self_
+
+run_name: ??? # Will be used for logging
+debug_testing: False
+
+model:
+  checkpoint_path: ????
+  hparams_overrides:
+    inference:
+      free_generation: false
+      entity_trie_path: "${data_dir}/tries/large/entity_trie.pickle"
+      relation_trie_path: "${data_dir}/tries/large/relation_trie.pickle"
+
+mode: "evaluate"
+
+test_after_training: null # doesn't apply

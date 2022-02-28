@@ -1,0 +1,24 @@
+free_generation: false
+entity_trie_path: ${data_dir}tries/entity_trie.pickle
+relation_trie_path: ${data_dir}tries/relation_trie.pickle
+
+hf_generation_params:
+  num_beams: 10
+  num_return_sequences: ${.num_beams}
+
+  min_length: 0
+  max_length: ${...max_output_length}
+
+  early_stopping: false
+
+  encoder_no_repeat_ngram_size: 0
+  no_repeat_ngram_size: 0
+
+  temperature: 1.0
+  length_penalty: 1.0
+
+seed: ${seed}
+save_testing_data: true
+save_full_beams: false
+# Allow for messages concerning ill formatting or duplication of triples in textual sequences
+verbose_flag_in_convert_to_triple: false

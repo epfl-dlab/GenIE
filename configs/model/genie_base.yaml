@@ -1,0 +1,31 @@
+defaults:
+  - inference: default
+
+_target_: genie.models.genie_base_pl.GeniePL
+
+model_name_or_path: facebook/bart-large
+max_input_length: 256
+max_output_length: 256
+bos_as_first_token_generated: True
+
+# TODO (p_low): To move to trainer/optimizer and link them
+# TODO (p_low): Make recursive instantiation of optimizer and scheduler
+# --- Learning rates and Schedulers ---
+lr: 3e-05
+weight_decay: 0.01
+schedule_name: "polynomial" # or linear
+lr_end: 0.0
+
+#warmup_updates: 500
+warmup_updates: 1000
+total_num_updates: ${trainer.max_steps}
+# ------------
+
+# --- Loss ---
+eps: 0.1
+# ------------
+
+# --- Optimizer ---
+#adam_betas: (0.9, 0.999)
+adam_eps: 1e-08
+# ------------

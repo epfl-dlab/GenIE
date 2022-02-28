@@ -1,0 +1,112 @@
+# @package _global_
+
+# Example call
+#
+# python run.py +evaluation=results_small \
+# evaluations_to_run.wikipedia_nre.getter.path="$path_to_wikipedia_nre_testing_output_jsonl" \
+# evaluations_to_run.geo_nre.getter.path="$path_to_geo_nre_testing_output_jsonl" \
+# run_name="results_genie_w"
+
+defaults:
+  - override /logger:
+      - csv
+      - wandb
+  - override /trainer: null
+  - override /model: null
+  - override /datamodule: wikipedia_nre # Use to select the reference training dataset for the bucket plot
+  - override /callbacks: null
+  - override /experiment: null
+  - override /hparams_search: null
+  - _self_
+
+run_name: ??? # Will be used for logging
+entity_trie_path: null
+relation_trie_path: null
+
+evaluations_to_run:
+  wikipedia_nre:
+    getter:
+      _target_: genie.utils.evaluation.DefaultGetter
+      # Select the corresponding testing_output.json file"""
+      path: ???
+
+    evaluators:
+      micro:
+        _target_: genie.utils.evaluators.MicroMetricsEvaluator
+        num_bootstrap_samples: 50 # set to null in order not to perform bootstrap sampling
+      bucket:
+        _target_: genie.utils.evaluators.BucketEvaluator
+        num_bootstrap_samples: 50
+      macro:
+        _target_: genie.utils.evaluators.MacroMetricsEvaluator
+        num_bootstrap_samples: 50
+
+    bucket_plot_helper:
+      _target_: genie.utils.plot_helpers.BucketPlotHelper
+
+    # Use to adjust the range of the histogram on the bucket plot """
+    bucket_plot_right_ylim_bottom: 0 # ex. 0 or null to keep the default ones
+    bucket_plot_right_ylim_top: 50 # ex. 150 or null to keep the default ones
+    model_name: "GenIE (Wiki-NRE)"
+
+    metrics:
+      precision:
+        _target_: genie.metrics.triplet_set_precision.TSPrecision
+      recall:
+        _target_: genie.metrics.triplet_set_recall.TSRecall
+      f1:
+        _target_: genie.metrics.triplet_set_f1.TSF1
+
+  geo_nre:
+    getter:
+      _target_: genie.utils.evaluation.DefaultGetter
+      # Select the corresponding testing_output.json file"""
+      path: ???
+
+    evaluators:
+      micro:
+        _target_: genie.utils.evaluators.MicroMetricsEvaluator
+        num_bootstrap_samples: 50
+
+      macro:
+        _target_: genie.utils.evaluators.MacroMetricsEvaluator
+        num_bootstrap_samples: 50
+
+    metrics:
+      precision:
+        _target_: genie.metrics.triplet_set_precision.TSPrecision
+      recall:
+        _target_: genie.metrics.triplet_set_recall.TSRecall
+      f1:
+        _target_: genie.metrics.triplet_set_f1.TSF1
+
+###################################################################
+################ IGNORE EVERYTHING AFTER THIS LINE ################
+###################################################################
+
+mode: "evaluate_from_file" # train, evaluate, evaluate_from_file
+
+# path to original working directory
+work_dir: ${hydra:runtime.cwd}
+
+# path to folder with data
+data_dir: ${work_dir}/data/
+
+# use `python run.py debug=true` for easy debugging!
+# this will run 1 train, val and test loop with only 1 batch
+# equivalent to running `python run.py trainer.fast_dev_run=true`
+# (this is placed here just for easier access from command line)
+debug: null
+debug_ckpt_path: null
+
+# pretty print config at the start of the run using Rich library
+print_config: True
+
+# disable python warnings if they annoy you
+ignore_warnings: False
+
+# check performance on test set, using the best model achieved during training
+# lightning chooses best model based on metric specified in checkpoint callback
+test_after_training: null
+
+seed: 123

@@ -1,0 +1,120 @@
+# @package _global_
+
+defaults:
+  - override /datamodule: null
+  - override /trainer: null
+  - override /model: null
+  - _self_
+
+trainer:
+  _target_: pytorch_lightning.Trainer
+  gpus: 3
+  accelerator: ddp
+  replace_sampler_ddp: true
+  num_sanity_val_steps: 0
+  max_steps: 100000
+  val_check_interval: 158272
+  weights_summary: null
+  progress_bar_refresh_rate: 5
+  resume_from_checkpoint: null
+  gradient_clip_val: 0.1
+  gradient_clip_algorithm: norm
+  accumulate_grad_batches: 32
+
+model:
+  _target_: genie.models.genie_base_pl.GeniePL
+  model_name_or_path: "random"
+  max_input_length: 256
+  max_output_length: 256
+  bos_as_first_token_generated: true
+
+  inference:
+    free_generation: false
+    entity_trie_path: ${data_dir}tries/large/entity_trie.pickle
+    relation_trie_path: ${data_dir}tries/large/relation_trie.pickle
+
+    hf_generation_params:
+      num_beams: 10
+      num_return_sequences: ${.num_beams}
+
+      min_length: 0
+      max_length: ${...max_output_length}
+
+      early_stopping: false
+
+      encoder_no_repeat_ngram_size: 0
+      no_repeat_ngram_size: 0
+
+      temperature: 1.0
+      length_penalty: 1.0
+
+    seed: ${seed}
+    save_testing_data: true
+    save_full_beams: false
+    verbose_flag_in_convert_to_triple: false
+
+  lr: 3.0e-05
+  adam_eps: 1.0e-08
+  weight_decay: 0.01
+
+  schedule_name: polynomial
+  lr_end: 0.0
+  warmup_updates: 5000
+  total_num_updates: ${trainer.max_steps}
+
+  eps: 0.1
+
+datamodule:
+  _target_: genie.datamodule.datasets_pl.DataModule
+  matching_status: title
+  padding: true
+  truncation: true
+  seed: ${seed}
+  target_paddding_token_id: null
+  relations_to_keep: ${data_dir}world_definitions/complete_relations.jsonl
+  batch_size: 4
+  num_workers: 10
+  pin_memory: false
+  dataset_name: rebel
+  data_dir: ${data_dir}${.dataset_name}
+
+callbacks:
+  model_checkpoint:
+    _target_: pytorch_lightning.callbacks.ModelCheckpoint
+    monitor: val-nll_loss
+    mode: min
+    save_top_k: 2
+    save_last: true
+    verbose: false
+    dirpath: checkpoints/
+    filename: model-epoch_{epoch:03d}-step_{step:04d}-val_nll_loss_{val-nll_loss:.4f}
+    save_on_train_epoch_end: false
+    auto_insert_metric_name: false
+  learning_rate_monitor:
+    _target_: pytorch_lightning.callbacks.LearningRateMonitor
+    logging_interval: step
+
+logger:
+  wandb:
+    _target_: pytorch_lightning.loggers.wandb.WandbLogger
+    project: GenIE
+    name: ${run_name}
+    save_dir: .
+    offline: false
+    id: null
+    log_model: false
+    job_type: train
+    group: ""
+    tags: []
+    notes: null
+
+run_name: genie_r
+mode: train
+test_after_training: true
+work_dir: ${hydra:runtime.cwd}
+data_dir: ${work_dir}/data/
+debug: false
+print_config: true
+ignore_warnings: false
+seed: 123
+debug_ckpt_path: null

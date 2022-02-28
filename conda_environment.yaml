@@ -1,0 +1,6 @@
+channels:
+  - defaults
+  - pytorch
+  - conda-forge
+dependencies:
+  - pip

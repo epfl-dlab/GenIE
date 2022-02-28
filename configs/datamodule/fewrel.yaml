@@ -1,0 +1,7 @@
+defaults:
+  - default.yaml
+
+_target_: genie.datamodule.datasets_pl.DataModule
+
+dataset_name: "fewrel"
+data_dir: ${data_dir}${datamodule.dataset_name}

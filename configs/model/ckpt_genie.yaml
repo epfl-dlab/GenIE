@@ -1,0 +1,23 @@
+defaults:
+  - ckpt_default.yaml
+
+checkpoint_path: "${data_dir}/models/genie_r.ckpt"
+hparams_overrides:
+  inference:
+    free_generation: false
+    entity_trie_path: "${data_dir}/tries/large/entity_trie.pickle"
+    relation_trie_path: "${data_dir}/tries/large/relation_trie.pickle"
+
+    hf_generation_params:
+      num_beams: 2
+      num_return_sequences: ${.num_beams}
+
+      early_stopping: False
+
+      encoder_no_repeat_ngram_size: 0
+      no_repeat_ngram_size: 0
+
+      temperature: 1.0
+      length_penalty: 1.0
+      return_dict_in_generate: True
+      output_scores: True

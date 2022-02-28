@@ -1,0 +1,8 @@
+defaults:
+  - default.yaml
+
+_target_: genie.datamodule.datasets_pl.DataModule
+
+dataset_name: "wikipedia_nre"
+data_dir: ${data_dir}${datamodule.dataset_name}
+relations_to_keep: null # use full dataset

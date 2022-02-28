@@ -1,0 +1,20 @@
+# Parameter that controls the quality of the matching allowed in the data
+# title: allows only entities and relations with guaranteed unique textual identifiers coming from the title
+# label: additionally allows for labels which could potentially not be unique to be used as identifiers (see the section covering the ID2Name dictionaries in the Demo notebook for details)
+matching_status: "title" # title or label
+
+padding: True
+truncation: True
+seed: ${seed}
+target_paddding_token_id: null # the padding token in the target sequences for HF is -100 (if null the tokenizer's default value is used)
+# Ignores any samples with at least one relation that is not inside the relations_to_keep.jsonl file
+relations_to_keep: ${data_dir}world_definitions/complete_relations.jsonl
+
+# Keeps all of the samples that pass the the relations_to_keep filter, but ignores some of them
+# relations_to_ignore: # ignores the relations in this file
+# relation_not_to_ignore: # ignores all of the relations in the set relations_to_keep - relation_not_to_ignore
+
+# Concerning the data_loaders
+batch_size: 4
+num_workers: 10
+pin_memory: False

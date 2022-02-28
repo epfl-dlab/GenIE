@@ -1,0 +1,21 @@
+model_checkpoint:
+  _target_: pytorch_lightning.callbacks.ModelCheckpoint
+  monitor: "val-nll_loss" # name of the logged metric which determines when model is improving
+  mode: "min" # can be "max" or "min"
+  save_top_k: 3 # save k best models (determined by above metric)
+  save_last: True # additionally always save model from last epoch
+  verbose: False
+  dirpath: "checkpoints/"
+  filename: "model-epoch_{epoch:03d}-step_{step:04d}-val_nll_loss_{val-nll_loss:.4f}"
+  save_on_train_epoch_end: False
+  auto_insert_metric_name: False
+
+learning_rate_monitor:
+  _target_: pytorch_lightning.callbacks.LearningRateMonitor
+  logging_interval: "step"
+#early_stopping:
+#  _target_: pytorch_lightning.callbacks.EarlyStopping
+#  monitor: "val-nll_loss" # name of the logged metric which determines when model is improving
+#  mode: "max" # can be "max" or "min"
+#  patience: 3 # how many validation epochs of not improving until training stops
+#  min_delta: 0 # minimum change in the monitored metric needed to qualify as an improvement

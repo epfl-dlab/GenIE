@@ -1,0 +1,8 @@
+defaults:
+  - default.yaml
+
+_target_: genie.datamodule.datasets_pl.DataModule
+
+dataset_name: "geo_nre"
+data_dir: ${data_dir}geo_nre
+relations_to_keep: null # use full dataset
