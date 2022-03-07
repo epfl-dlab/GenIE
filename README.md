@@ -60,3 +60,7 @@ To run the evaluation in a distributed fashion (e.g. with 4 GPUs on a single mac
 
 From here, to generate the plots and the bootstrapped results reported in the paper run
 <code>python run.py +evaluation=results_full</code>. See the [configuration file](configs/evaluation/results_full.yaml) for details.
+
+---
+### License
+This project is licensed under the terms of the MIT license.
