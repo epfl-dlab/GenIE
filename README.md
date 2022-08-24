@@ -2,11 +2,21 @@
 
 This repository contains a PyTorch implementation of the autoregressive information extraction system GenIE proposed in the paper [GenIE: Generative Information Extraction](https://arxiv.org/abs/2112.08340).
 ```
-@article{josifoski2021genie,
-  title={GenIE: Generative Information Extraction},
-  author={Josifoski, Martin and De Cao, Nicola and Peyrard, Maxime and and Petroni, Fabio and West, Robert},
-  journal={arXiv preprint arXiv:2112.08340},
-  year={2021}
+@inproceedings{josifoski-etal-2022-genie,
+    title = "{G}en{IE}: Generative Information Extraction",
+    author = "Josifoski, Martin  and
+      De Cao, Nicola  and
+      Peyrard, Maxime  and
+      Petroni, Fabio  and
+      West, Robert",
+    booktitle = "Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies",
+    month = jul,
+    year = "2022",
+    address = "Seattle, United States",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2022.naacl-main.342",
+    doi = "10.18653/v1/2022.naacl-main.342",
+    pages = "4626--4643",
 }
 ```
 **Please consider citing our work, if you found the provided resources useful.**
