@@ -445,6 +445,10 @@ class GeniePL(LightningModule):
         surface_form_mappings={"entity_name2id": None, "relation_name2id": None},
         **kwargs,
     ):
+        training = self.training
+        if training:
+            self.eval()
+
         """Input data is a list of strings or a processed batch (contains src_input_ids,
         and src_attention_mask as expected in training)"""
         inference_parameters = self.hparams.inference["hf_generation_params"].copy()
@@ -543,6 +547,9 @@ class GeniePL(LightningModule):
                 output = GeniePL._convert_output_to_triplets(output, **surface_form_mappings)
                 # output = [TripletUtils.convert_text_sequence_to_text_triples(text) for text in output]
 
-            output = [output[i : i + k] for i in range(0, len(output), k)]
+            output = [output[i: i + k] for i in range(0, len(output), k)]
+
+            if training:
+                self.train()
 
             return output
