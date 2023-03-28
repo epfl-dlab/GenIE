@@ -1,6 +1,6 @@
 # GenIE: Generative Information Extraction
 
-This repository contains a PyTorch implementation of the autoregressive information extraction system GenIE proposed in the paper [GenIE: Generative Information Extraction](https://arxiv.org/abs/2112.08340).
+This repository contains a PyTorch implementation of the autoregressive information extraction system GenIE proposed in the paper [GenIE: Generative Information Extraction](https://arxiv.org/abs/2112.08340). We extend these ideas in our follow-up work on SynthIE, visit this [link](https://github.com/epfl-dlab/SynthIE) for details.
 ```
 @inproceedings{josifoski-etal-2022-genie,
     title = "{G}en{IE}: Generative Information Extraction",
